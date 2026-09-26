@@ -56,6 +56,39 @@ SDL_mutex *global_sdl_mutex;
 
 int gif_cnt = 0;
 
+#ifndef EMULATOR_BUILD
+static lv_obj_t *splash_image;
+
+static void show_splash(void) {
+    static const char splash_path[] = "/mnt/app/resource/splash.png";
+
+    if (access(splash_path, R_OK) != 0)
+        return;
+
+    splash_image = lv_img_create(lv_scr_act());
+    lv_img_set_src(splash_image, "A:/mnt/app/resource/splash.png");
+    lv_obj_set_pos(splash_image, 0, 0);
+    lv_obj_move_foreground(splash_image);
+    lv_timer_handler();
+}
+
+static void hide_splash(void) {
+    if (splash_image == NULL)
+        return;
+
+    for (int elapsed_ms = 0; elapsed_ms < 2000; elapsed_ms += 20) {
+        usleep(20000);
+        lv_timer_handler();
+    }
+    lv_obj_del(splash_image);
+    splash_image = NULL;
+    lv_timer_handler();
+}
+#else
+static void show_splash(void) {}
+static void hide_splash(void) {}
+#endif
+
 static void *thread_autoscan(void *ptr) {
     for (;;) {
         pthread_mutex_lock(&lvgl_mutex);
@@ -189,12 +222,14 @@ int main(int argc, char *argv[]) {
     lvgl_init();
     main_menu_init();
     statusbar_init();
+    show_splash();
     lv_timer_handler();
 
     // 5. Prepare Display
     screen.start_up();
     Display_UI_init();
     screen.pattern(0, 0, 0);
+    hide_splash();
     osd_init();
     ims_init();
     ui_osd_element_pos_init();
