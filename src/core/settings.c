@@ -31,7 +31,7 @@ const setting_t g_setting_defaults = {
         .right_speed = 5,
     },
     .autoscan = {
-        .status = SETTING_AUTOSCAN_STATUS_ON,
+        .status = SETTING_AUTOSCAN_STATUS_LAST,
         .last_source = SETTING_AUTOSCAN_SOURCE_LAST,
         .source = SETTING_AUTOSCAN_SOURCE_HDZERO,
     },
