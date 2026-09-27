@@ -34,9 +34,9 @@ CW, CH, OL = 12, 18, 1
 dig.BOLD = 0.0
 BLACK_V, SEE_V, WHITE_V = 0b00, 0b01, 0b10
 # 0x24 is the MAX symbol and 0x2A a propeller icon in the analog font: keep both.
-# At 12x18 the detailed symbols (# % & @ [ \\ ] ^) lose strokes or turn to mush
+# At 12x18 the detailed symbols (# % & @ [ \\ ] ^ < >) lose strokes, step or turn to mush
 # in the display font, so they keep Betaflight's hand-drawn stock pixels.
-KEEP_STOCK = {0x24, 0x2A, 0x23, 0x25, 0x26, 0x40, 0x5B, 0x5C, 0x5D, 0x5E}
+KEEP_STOCK = {0x24, 0x2A, 0x23, 0x25, 0x26, 0x40, 0x5B, 0x5C, 0x5D, 0x5E, 0x3C, 0x3E}
 TEXT_CODES = [c for c in range(0x21, 0x60) if c not in KEEP_STOCK]
 
 BLUE = np.array([0x20, 0xA7, 0xFF])
