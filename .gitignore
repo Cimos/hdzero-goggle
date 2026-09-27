@@ -23,3 +23,8 @@ utilities/font/out
 # nix related
 result
 result-*
+
+# local build drops, worktrees and Python cache
+/release
+/.claude
+__pycache__/
