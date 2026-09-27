@@ -306,6 +306,8 @@ static void create_btn_with_arrow(lv_obj_t *parent, btn_with_arr_t *btn_a, const
 
     btn_a->arrow = lv_img_create(btn_a->container);
     lv_img_set_src(btn_a->arrow, &img_arrow1);
+    lv_obj_set_style_img_recolor(btn_a->arrow, lv_color_hex(UI_COLOR_SECONDARY), 0);
+    lv_obj_set_style_img_recolor_opa(btn_a->arrow, LV_OPA_COVER, 0);
     lv_obj_add_flag(btn_a->arrow, LV_OBJ_FLAG_HIDDEN);
     lv_obj_set_grid_cell(btn_a->arrow, LV_GRID_ALIGN_END, 0, 1,
                          LV_GRID_ALIGN_CENTER, 0, 1);
@@ -378,6 +380,8 @@ static void create_btn_with_arrow_compact(lv_obj_t *parent, btn_with_arr_t *btn_
 
     btn_a->arrow = lv_img_create(btn_a->container);
     lv_img_set_src(btn_a->arrow, &img_arrow1);
+    lv_obj_set_style_img_recolor(btn_a->arrow, lv_color_hex(UI_COLOR_SECONDARY), 0);
+    lv_obj_set_style_img_recolor_opa(btn_a->arrow, LV_OPA_COVER, 0);
     lv_img_set_zoom(btn_a->arrow, zoom_factor);
 
     lv_obj_set_style_pad_top(btn_a->arrow, 0, 0);

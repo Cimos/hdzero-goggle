@@ -6,6 +6,9 @@ extern "C" {
 
 #include "lvgl/lvgl.h"
 
+#define UI_COLOR_PRIMARY   0x20A7FF
+#define UI_COLOR_SECONDARY 0xF49ABA
+
 enum KB_STYLE {
     KB_STYLE_MAIN = 0,
     KB_STYLE_KEY,
