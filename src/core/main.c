@@ -59,10 +59,6 @@ int gif_cnt = 0;
 #ifndef EMULATOR_BUILD
 static lv_obj_t *splash_image;
 
-static void set_splash_opacity(void *image, int32_t opacity) {
-    lv_obj_set_style_opa(image, opacity, LV_PART_MAIN);
-}
-
 static void show_splash(void) {
     static const char splash_path[] = "/mnt/app/resource/splash.png";
 
@@ -85,21 +81,25 @@ static void hide_splash(void) {
         lv_timer_handler();
     }
 
-    lv_anim_t fade;
-    lv_anim_init(&fade);
-    lv_anim_set_var(&fade, splash_image);
-    lv_anim_set_values(&fade, LV_OPA_COVER, LV_OPA_TRANSP);
-    lv_anim_set_time(&fade, 1000);
-    lv_anim_set_exec_cb(&fade, set_splash_opacity);
-    lv_anim_start(&fade);
-
-    for (int elapsed_ms = 0; elapsed_ms < 1000; elapsed_ms += 20) {
-        usleep(20000);
-        lv_timer_handler();
+    // Fade out with the OLED panel brightness, not LVGL opacity. The UI does a
+    // full-screen refresh and images are not cached, so an opacity animation
+    // re-decodes the 1928x1088 PNG for every frame and the fade gets skipped.
+    // Panel brightness steps cost one register write each.
+    uint8_t level = g_setting.image.oled;
+    if (level > 12)
+        level = 12;
+    for (int step = level; step >= 0; step--) {
+        screen.brightness(step);
+        usleep(1000000 / (level + 1));
     }
+
+    // Level 0 is dim, not off: blank the panel while the menu replaces the splash
+    screen.display(0);
     lv_obj_del(splash_image);
     splash_image = NULL;
     lv_timer_handler();
+    screen.display(1);
+    screen.brightness(g_setting.image.oled);
 }
 #else
 static void show_splash(void) {}
